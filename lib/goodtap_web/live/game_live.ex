@@ -1561,11 +1561,13 @@ defmodule GoodtapWeb.GameLive do
         <div class="flex items-center gap-1 px-4 py-2 min-w-max mx-auto">
           <%= if hand_count > 0 do %>
             <%= for card <- opp_hand do %>
+              <% img_url = card_display_url(card, @my_role, @viewed_opponent, "hand") %>
               <img
-                src={if State.known_to?(card, @my_role), do: (card["image_uris"]["front"] || "/images/CardBack.png"), else: "/images/CardBack.png"}
+                src={img_url}
                 class="rounded shadow"
                 style="width: 30px; height: 44px; object-fit: cover;"
                 draggable="false"
+                {preview_attrs(img_url)}
               />
             <% end %>
           <% else %>
