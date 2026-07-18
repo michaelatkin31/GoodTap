@@ -10,7 +10,7 @@ defmodule Goodtap.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
-      compilers: [:phoenix_live_view] ++ Mix.compilers(),
+      compilers: [:elixir_make, :phoenix_live_view] ++ Mix.compilers(),
       listeners: [Phoenix.CodeReloader]
     ]
   end
@@ -41,6 +41,7 @@ defmodule Goodtap.MixProject do
   defp deps do
     [
       {:bcrypt_elixir, "~> 3.0"},
+      {:elixir_make, "~> 0.8", runtime: false},
       {:phoenix, "~> 1.8.4"},
       {:phoenix_ecto, "~> 4.5"},
       {:ecto_sql, "~> 3.13"},

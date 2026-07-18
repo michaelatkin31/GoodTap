@@ -1,6 +1,7 @@
 defmodule Goodtap.GameEngine.State do
   alias Goodtap.Catalog
   alias Goodtap.Decks
+  alias Goodtap.GameEngine.FairDice
 
   @double_faced_layouts ["transform", "modal_dfc", "double_faced_token", "reversible_card"]
 
@@ -60,9 +61,13 @@ defmodule Goodtap.GameEngine.State do
   defp roll_until_winner(all_keys, player_states, contenders, log_acc) do
     t = System.system_time(:second)
 
+    # Strong per-round entropy handed to the native roller.
+    seed = :crypto.strong_rand_bytes(16)
+
     rolls =
       Enum.map(contenders, fn key ->
-        dice = Enum.map(1..2, fn _ -> :rand.uniform(6) end)
+        username = get_in(player_states, [key, "username"]) || key
+        dice = FairDice.roll_pair(seed, username)
         total = Enum.sum(dice)
         {key, dice, total}
       end)
